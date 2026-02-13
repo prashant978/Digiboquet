@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digibouquet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        /* Main styles for the Digibouquet application */
+        body {
+            background-color: #fcfbe7;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            transition: filter 0.3s;
+        }
+        .logo-container {
+            margin: 20px 0;
+        }
+        .logo-flower {
+            width: 80px;
+            height: auto;
+        }
+        .logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin: 0;
+        }
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        button {
+            padding: 10px 22px;
+            margin: 8px;
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+        .black-btn {
+            background-color: #000;
+            color: #fff;
+        }
+        .white-btn {
+            background-color: #fff;
+            color: #000;
+        }
+        .page {
+            display: none;
+        }
+        #home {
+            display: block;
+        }
+        .flower-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 22px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        .flower-item {
+            position: relative;
+        }
+        .flower-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .flower-btn img {
+            width: 125px;
+            height: auto;
+        }
+        .hover-card {
+            display: none;
+            position: absolute;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 210px;
+            background: #fff;
+            border: 2px solid #000;
+            padding: 12px;
+            box-shadow: 5px 5px 0 #000;
+            z-index: 20;
+            text-align: center;
+        }
+        .flower-item:hover .hover-card {
+            display: block;
+        }
+        .name {
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .meaning {
+            font-size: 15px;
+            margin: 4px 0;
+        }
+        .birth {
+            font-size: 14px;
+        }
+        .selected-flowers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0;
+        }
+        .selected-btn {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .selected-btn:hover {
+            background: #f0f0f0;
+        }
+        .bouquet {
+            position: relative;
+            width: 420px;
+            height: 520px;
+            margin: 25px auto;
+            overflow: hidden;
+        }
+        .greenery {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        .flower-in-bouquet {
+            position: absolute;
+            z-index: 2;
+            transform-origin: 50% 75%;
+        }
+        .flower-in-bouquet img {
+            width: 152px;
+            height: auto;
+        }
+        .card {
+            position: absolute;
+            bottom: 95px;
+            left: 110px;
+            width: 200px;
+            background: #fff;
+            padding: 12px;
+            border: 1px solid #000;
+            transform: rotate(-6deg);
+            z-index: 4;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .decor-flowers {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .decor-left img, .decor-right img {
+            width: 60px;
+            height: auto;
+            margin: 0 10px;
+        }
+        textarea {
+            width: 300px;
+            height: 150px;
+            font-family: monospace;
+            padding: 10px;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+        }
+        .bw {
+            filter: grayscale(100%);
+        }
+        .final-message {
+            margin: 20px auto;
+            max-width: 400px;
+        }
+        .final-message textarea {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        
+        /* Music player styling */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #000;
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: 3px 3px 0 #000;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .music-player button {
+            padding: 5px 10px;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .music-player span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        #bg-music {
+            display: none;
+        }
+
+        /* Shared message display */
+        .shared-message {
+            margin: 20px auto;
+            max-width: 400px;
+            text-align: left;
+        }
+        
+        .shared-message h3 {
+            text-align: center;
+        }
+        
+        .shared-message-content {
+            background: white;
+            border: 2px solid #000;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            min-height: 100px;
+        }
+
+        /* Instagram link styling - ONLY IN HOME PAGE */
+        .instagram-link {
+            margin: 30px 0 20px;
+            padding: 15px;
+        }
+
+        .instagram-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #000;
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            box-shadow: 4px 4px 0 #000;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .instagram-link a:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+            background: #f9f7ed;
+        }
+
+        .instagram-link img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Background Music
+    <audio id="bg-music" autoplay loop>
+        <source src="audio/snaptik_7568051171114405128_v3.mp3" type="audio/mpeg">
+    </audio>
+    
+    Music Player -->
+    <!-- <div class="music-player">
+        <span>🎵</span>
+        <button id="music-toggle" class="black-btn" onclick="toggleMusic()">Mute</button>
+    </div> --> 
+
+    <!-- Home Page with Instagram Link (ONLY HERE) -->
+    <div id="home" class="page">
+        <div class="logo-container">
+            <img class="logo-flower" src="image/13.png" alt="Logo Flower">
+            <div class="logo">Digibouquet</div>
+        </div>
+        <div class="subtitle">Beautiful Flowers Delivered Digitally</div>
+        
+        <button class="black-btn" onclick="startBuild(false)">Build a Bouquet</button>
+        <button class="white-btn" onclick="startBuild(true)">Build it in Black and White</button>
+        
+        <p><a href="#garden" onclick="viewGarden()">View Garden</a></p>
+        
+        <!-- Instagram Link - Only here, no footers elsewhere -->
+        <div class="instagram-link">
+            <a href="https://www.instagram.com/shah.i_prashant/" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+    
+            </a>
+        </div>
+        
+    </div>
+
+    <!-- Flower Selection Page -->
+    <div id="pick" class="page">
+        <div class="logo">Digibouquet</div>
+        <h2>PICK 6 TO 10 BLOOMS</h2>
+        <p style="margin-bottom:30px; font-size:15px;">Click on a flower's name to deselect it.</p>
+        <div class="flower-options" id="flower-options"></div>
+        <div id="selected-flowers" class="selected-flowers"></div>
+        <button id="next-pick" class="black-btn" disabled onclick="goToCustomize()">NEXT</button>
+    </div>
+
+    <!-- Bouquet Customization Page -->
+    <div id="customize" class="page">
+        <div class="logo">Digibouquet</div>
+        <h2>Customize Your Bouquet</h2>
+        <button class="black-btn" onclick="newArrangement()">New Arrangement</button>
+        <button class="white-btn" onclick="changeGreenery()">Change Greenery</button>
+        <div id="bouquet-preview" class="bouquet"></div>
+        <button class="white-btn" onclick="goBack('pick')">Back</button>
+        <button class="black-btn" onclick="goToWrite()">Next</button>
+    </div>
+
+    <!-- Message Writing Page -->
+    <div id="write" class="page">
+        <div class="logo">Digibouquet</div>
+        <h2>Write the Card</h2>
+        <div class="decor-flowers">
+            <div class="decor-left">
+                <img src="image/4.png" alt="Daisy">
+                <img src="image/9.png" alt="Bellflower">
+                <img src="image/10.png" alt="Anemone">
+            </div>
+            <textarea id="message" placeholder="Dear Beloved,&#10;I have so much to tell you, but only this much space on this card!&#10;Still, you must know...&#10;&#10;Sincerely,&#10;Secret Admirer"></textarea>
+            <div class="decor-right">
+                <img src="image/13.png" alt="Sunflower">
+                <img src="image/12.png" alt="Rose">
+                <img src="image/11.png" alt="Peony">
+            </div>
+        </div>
+        <button class="white-btn" onclick="goBack('customize')">Back</button>
+        <button class="black-btn" onclick="goToFinal()">Next</button>
+    </div>
+
+    <!-- Final Bouquet Page -->
+    <div id="final" class="page">
+        <div class="logo">Digibouquet</div>
+        <div id="final-bouquet" class="bouquet"></div>
+        
+        <div class="final-message">
+            <h3>Your Message:</h3>
+            <textarea id="final-message-display" readonly></textarea>
+        </div>
+        
+        <div class="button-container">
+            <button class="black-btn" onclick="createShareableLink()">Create Shareable Link</button>
+            <button class="white-btn" onclick="goBack('write')">Back</button>
+        </div>
+    </div>
+
+    <!-- View Shared Bouquet Page -->
+    <div id="view" class="page">
+        <div class="logo">Digibouquet</div>
+        <h2>Your Bouquet</h2>
+        <div id="view-bouquet" class="bouquet"></div>
+        
+        <div class="shared-message">
+            <h3>Message for You:</h3>
+            <div id="shared-message-content" class="shared-message-content"></div>
+        </div>
+        
+        <button class="black-btn" onclick="goToHomeAndBuild()">Build Your Own Bouquet</button>
+        <button class="white-btn" onclick="goToHome()">Home</button>
+    </div>
+
+    <script>
+        // Music Control
+        function getMusicElement() {
+            return document.getElementById('bg-music');
+        }
+        
+        function initMusic() {
+            const music = getMusicElement();
+            music.play().catch(error => {
+                document.getElementById('music-toggle').textContent = 'Unmute';
+            });
+        }
+        
+        function toggleMusic() {
+            const music = getMusicElement();
+            const button = document.getElementById('music-toggle');
+            
+            if (music.muted) {
+                music.muted = false;
+                button.textContent = 'Mute';
+                music.play();
+            } else {
+                music.muted = true;
+                button.textContent = 'Unmute';
+            }
+        }
+        
+        window.addEventListener('load', function() {
+            initMusic();
+        });
+
+        // Flower Data
+        const flowers = [
+            {id: 1, src: "image/1.png", name: "ORCHID"},
+            {id: 2, src: "image/2.png", name: "TULIP"},
+            {id: 3, src: "image/3.png", name: "CHRYSANTHEMUM"},
+            {id: 4, src: "image/4.png", name: "ANEMONE"},
+            {id: 5, src: "image/5.png", name: "CARNATION"},
+            {id: 6, src: "image/6.png", name: "GERBERA"},
+            {id: 7, src: "image/7.png", name: "ROSE"},
+            {id: 8, src: "image/8.png", name: "SUNFLOWER"},
+            {id: 9, src: "image/9.png", name: "LILY"},
+            {id: 10, src: "image/10.png", name: "DAISY"},
+            {id: 11, src: "image/11.png", name: "PEONY"},
+            {id: 12, src: "image/12.png", name: "ROSE"}
+        ];
+
+        const flowerInfo = {
+            1: {name: "ORCHID", meaning: "Beauty", month: "October"},
+            2: {name: "TULIP", meaning: "Perfect Lover", month: "April"},
+            3: {name: "CHRYSANTHEMUM", meaning: "Cheerfulness", month: "November"},
+            4: {name: "ANEMONE", meaning: "Sincerity", month: "March"},
+            5: {name: "CARNATION", meaning: "Fascination", month: "January"},
+            6: {name: "GERBERA", meaning: "Joy", month: "May"},
+            7: {name: "ROSE", meaning: "Love", month: "June"},
+            8: {name: "SUNFLOWER", meaning: "Admiration", month: "August"},
+            9: {name: "LILY", meaning: "Purity", month: "May"},
+            10: {name: "DAISY", meaning: "Innocence", month: "April"},
+            11: {name: "PEONY", meaning: "Prosperity", month: "June"},
+            12: {name: "ROSE", meaning: "Passion", month: "June"}
+        };
+
+        const greeneries = [
+            'image/greenary1.1.png',
+            'image/greenary1.2-PhotoRoom.png',
+            'image/greenary1.3-PhotoRoom.png'
+        ];
+
+        const arrangements = [
+            [
+                {top: 235, left: 105, rot: -18},
+                {top: 205, left: 175, rot: 22},
+                {top: 270, left: 85,  rot: -12},
+                {top: 185, left: 230, rot: 25},
+                {top: 295, left: 135, rot: 8},
+                {top: 240, left: 255, rot: -20},
+                {top: 315, left: 155, rot: 15},
+                {top: 220, left: 95,  rot: -10},
+                {top: 340, left: 195, rot: 18},
+                {top: 260, left: 220, rot: -15}
+            ],
+            [
+                {top: 245, left: 125, rot: -22},
+                {top: 210, left: 185, rot: 18},
+                {top: 275, left: 105, rot: -15},
+                {top: 195, left: 225, rot: 25},
+                {top: 305, left: 155, rot: -8},
+                {top: 235, left: 80,  rot: 12},
+                {top: 265, left: 245, rot: 20},
+                {top: 325, left: 140, rot: -18},
+                {top: 225, left: 200, rot: 10},
+                {top: 340, left: 170, rot: -12}
+            ],
+            [
+                {top: 255, left: 140, rot: 15},
+                {top: 200, left: 115, rot: -25},
+                {top: 280, left: 190, rot: 20},
+                {top: 180, left: 215, rot: 28},
+                {top: 315, left: 95,  rot: -15},
+                {top: 245, left: 245, rot: -20},
+                {top: 270, left: 75,  rot: 18},
+                {top: 230, left: 170, rot: -10},
+                {top: 335, left: 150, rot: 12},
+                {top: 295, left: 225, rot: -22}
+            ]
+        ];
+
+        // Application State
+        let isBW = false;
+        let flowerCounts = {};
+        let message = '';
+        let arrangementIndex = 0;
+        let greeneryIndex = 0;
+
+        // Flower Selection Functions
+        function initFlowers() {
+            const options = document.getElementById('flower-options');
+            options.innerHTML = '';
+            flowers.forEach(f => {
+                const item = document.createElement('div');
+                item.classList.add('flower-item');
+                const info = flowerInfo[f.id];
+                item.innerHTML = `
+                    <button class="flower-btn" onclick="addFlower(${f.id})">
+                        <img src="${f.src}" alt="${f.name}">
+                    </button>
+                    <div class="hover-card">
+                        <div class="name">${info.name}</div>
+                        <div class="meaning">${info.meaning}</div>
+                        <div class="birth">Birth Month: ${info.month}</div>
+                    </div>
+                `;
+                options.appendChild(item);
+            });
+        }
+
+        function getTotalSelected() {
+            return Object.values(flowerCounts).reduce((a, b) => a + b, 0);
+        }
+
+        function updateSelected() {
+            const container = document.getElementById('selected-flowers');
+            container.innerHTML = '';
+            Object.keys(flowerCounts).forEach(key => {
+                const id = parseInt(key);
+                const count = flowerCounts[key];
+                if (count > 0) {
+                    const flower = flowers.find(f => f.id === id);
+                    const btn = document.createElement('button');
+                    btn.classList.add('selected-btn');
+                    btn.textContent = `${flower.name} x${count}`;
+                    btn.onclick = () => removeFlower(id);
+                    container.appendChild(btn);
+                }
+            });
+            document.getElementById('next-pick').disabled = getTotalSelected() < 6;
+        }
+
+        function addFlower(id) {
+            if (getTotalSelected() < 10) {
+                flowerCounts[id] = (flowerCounts[id] || 0) + 1;
+                updateSelected();
+            }
+        }
+
+        function removeFlower(id) {
+            if (flowerCounts[id] > 0) {
+                flowerCounts[id]--;
+                if (flowerCounts[id] === 0) delete flowerCounts[id];
+                updateSelected();
+            }
+        }
+
+        function getSelectedFlowers() {
+            const sel = [];
+            flowers.forEach(f => {
+                for (let i = 0; i < (flowerCounts[f.id] || 0); i++) {
+                    sel.push(f.id);
+                }
+            });
+            return sel;
+        }
+
+        // Page Navigation
+        function startBuild(bw) {
+            isBW = bw;
+            flowerCounts = {};
+            message = '';
+            document.getElementById('message').value = '';
+            document.body.classList.toggle('bw', isBW);
+            showPage('pick');
+            if (!document.getElementById('flower-options').hasChildNodes()) initFlowers();
+            updateSelected();
+        }
+
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(page).style.display = 'block';
+            if (page === 'customize') updateBouquet('bouquet-preview');
+            if (page === 'final') {
+                updateBouquet('final-bouquet', false);
+                document.getElementById('final-message-display').value = message;
+            }
+        }
+
+        function goToCustomize() { showPage('customize'); }
+        function goToWrite() { showPage('write'); }
+        function goToFinal() {
+            message = document.getElementById('message').value;
+            showPage('final');
+        }
+        function goBack(prev) { showPage(prev); }
+        
+        function goToHome() {
+            showPage('home');
+        }
+        
+        function goToHomeAndBuild() {
+            showPage('home');
+        }
+
+        // Bouquet Rendering
+        function updateBouquet(containerId, includeCard = false, isMini = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            const greeneryImg = document.createElement('img');
+            greeneryImg.classList.add('greenery');
+            greeneryImg.src = greeneries[greeneryIndex];
+            container.appendChild(greeneryImg);
+
+            const selected = getSelectedFlowers();
+            const toShow = isMini ? selected.slice(0, 3) : selected;
+            const pos = arrangements[arrangementIndex].slice(0, toShow.length);
+
+            toShow.forEach((fid, i) => {
+                const flower = flowers.find(f => f.id === fid);
+                if (flower) {
+                    const div = document.createElement('div');
+                    div.classList.add('flower-in-bouquet');
+                    div.innerHTML = `<img src="${flower.src}" alt="Flower">`;
+                    const img = div.querySelector('img');
+                    img.style.width = isMini ? '82px' : '152px';
+
+                    div.style.top = `${pos[i].top}px`;
+                    div.style.left = `${pos[i].left}px`;
+                    div.style.transform = `rotate(${pos[i].rot}deg)`;
+
+                    container.appendChild(div);
+                }
+            });
+
+            if (includeCard) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerText = message;
+                container.appendChild(card);
+            }
+        }
+
+        function newArrangement() {
+            arrangementIndex = (arrangementIndex + 1) % arrangements.length;
+            updateBouquet('bouquet-preview');
+        }
+
+        function changeGreenery() {
+            greeneryIndex = (greeneryIndex + 1) % greeneries.length;
+            updateBouquet('bouquet-preview');
+        }
+
+        // Sharing Functions
+        function createShareableLink() {
+            const selectedFlowers = getSelectedFlowers();
+            if (selectedFlowers.length === 0) {
+                alert('Please select some flowers first!');
+                return;
+            }
+            
+            let encodedMessage = '';
+            try {
+                encodedMessage = btoa(encodeURIComponent(message));
+            } catch (e) {
+                encodedMessage = btoa(message);
+            }
+            
+            const params = new URLSearchParams({
+                f: selectedFlowers.join(','),
+                m: encodedMessage,
+                bw: isBW ? '1' : '0',
+                a: arrangementIndex,
+                g: greeneryIndex
+            });
+            
+            const link = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Link copied to clipboard! Share it with your friend.');
+            }).catch(() => {
+                prompt('Copy this shareable link:', link);
+            });
+        }
+
+        function parseParams() {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (params.has('f')) {
+                try {
+                    const sel = params.get('f').split(',').map(Number);
+                    flowerCounts = {};
+                    sel.forEach(id => {
+                        if (!isNaN(id) && id > 0) {
+                            flowerCounts[id] = (flowerCounts[id] || 0) + 1;
+                        }
+                    });
+                    
+                    const encodedMessage = params.get('m') || '';
+                    try {
+                        message = decodeURIComponent(atob(encodedMessage));
+                    } catch (e) {
+                        message = atob(encodedMessage) || '';
+                    }
+                    
+                    isBW = params.get('bw') === '1';
+                    arrangementIndex = parseInt(params.get('a') || '0');
+                    greeneryIndex = parseInt(params.get('g') || '0');
+                    
+                    document.body.classList.toggle('bw', isBW);
+                    
+                    showPage('view');
+                    
+                    updateBouquet('view-bouquet', false);
+                    
+                    const messageContent = document.getElementById('shared-message-content');
+                    if (messageContent) {
+                        messageContent.textContent = message || 'No message attached.';
+                    }
+                    
+                } catch (error) {
+                    console.error('Error parsing shared bouquet:', error);
+                    alert('Sorry, there was an error loading the shared bouquet.');
+                    showPage('home');
+                }
+            }
+        }
+
+        function viewGarden() {
+            alert('Garden view: Imagine a gallery of shared bouquets here!');
+        }
+
+        window.addEventListener('load', function() {
+            parseParams();
+        });
+    </script>
+</body>
+</html>
